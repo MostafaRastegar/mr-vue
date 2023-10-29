@@ -1,1 +1,2 @@
 export const ACCESS_TOKEN = "ACCESS_TOKEN";
+export const MUTATION_ACTION_POST_FIX = ["REQUEST", "SUCCESS", "FAILURE"];

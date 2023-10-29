@@ -1,13 +1,6 @@
 import actionTemplate from "@/helpers/vuex/actionTemplate";
 import services from "../services";
-import {
-  DELETE_ARTICLES_SLUG,
-  GET_ARTICLES,
-  GET_ARTICLES_SLUG,
-  GET_TAGS,
-  POST_ARTICLES,
-  PUT_ARTICLES_SLUG,
-} from "../types";
+import types from "../types";
 import type {
   PostArticlesBody,
   PostArticlesResult,
@@ -39,7 +32,7 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => services.postArticlesService(body),
-      type: POST_ARTICLES,
+      type: types.POST_ARTICLES,
       resolve: (data: PostArticlesResult) => {
         console.log("data :>> ", data);
         router.push("/articles");
@@ -53,7 +46,7 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => services.putArticlesSlugService(params),
-      type: PUT_ARTICLES_SLUG,
+      type: types.PUT_ARTICLES_SLUG,
       resolve: (data: PutArticlesSlugResult) => {
         console.log("data :>> ", data);
         router.push("/articles");
@@ -67,14 +60,14 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => services.getArticlesService(page),
-      type: GET_ARTICLES,
+      type: types.GET_ARTICLES,
     }),
 
   [articleActions.getTagsRequest]: (context: { commit: Commit }) =>
     actionTemplate({
       commit: context.commit,
       service: () => services.getTagsService(),
-      type: GET_TAGS,
+      type: types.GET_TAGS,
       resolve: (data: GetTagsResult) => {
         console.log("data :>> ", data);
       },
@@ -87,7 +80,7 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => services.getArticlesSlugService(slug),
-      type: GET_ARTICLES_SLUG,
+      type: types.GET_ARTICLES_SLUG,
       resolve: () => {
         context.dispatch(articleActions.getTagsRequest);
       },
@@ -100,7 +93,7 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => services.deleteArticlesSlugService(slug),
-      type: DELETE_ARTICLES_SLUG,
+      type: types.DELETE_ARTICLES_SLUG,
       resolve: () => {
         console.log("is delete");
         context.dispatch(articleActions.getArticlesRequest);

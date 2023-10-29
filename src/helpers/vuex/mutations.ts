@@ -1,10 +1,9 @@
 import { AnyObjects, InitState } from "@/app/interfaces";
+import { MUTATION_ACTION_POST_FIX } from "@/constants/configs";
 
 export interface Error {
   message: string;
 }
-
-const mutationActionKey = ["REQUEST", "SUCCESS", "FAILURE"];
 
 export const mutationReducers = {
   setRequest: (state: AnyObjects, key: string) => {
@@ -30,35 +29,30 @@ export const mutationReducers = {
   },
 };
 
-export const mutationKeysGenerator = (key: string) => {
-  const result: { [key: string]: string } = {};
-
-  mutationActionKey.forEach((action) => {
-    result[`${key}_${action}`] = `${key}_${action}`;
-  });
-
-  return result;
+/**
+ * Generates mutation functions for a given prefix type and key.
+ *
+ * @param prefixType - The prefix type for the mutation.
+ * @param key - The key for the mutation.
+ * @returns An object containing the mutation functions.
+ */
+export const mutationsGenerator = <T>(prefixType: string, key: string) => {
+  const [request, success, failure] = MUTATION_ACTION_POST_FIX;
+  const setRequest = (state: AnyObjects) => {
+    return mutationReducers.setRequest(state, key);
+  };
+  const setSuccess = (state: AnyObjects, data: T) => {
+    return mutationReducers.setSuccess<T>(state, key, data);
+  };
+  const setFailure = (state: AnyObjects, error: Error) => {
+    return mutationReducers.setFailure<Error>(state, key, error);
+  };
+  return {
+    [`${prefixType}_${request}`]: setRequest,
+    [`${prefixType}_${success}`]: setSuccess,
+    [`${prefixType}_${failure}`]: setFailure,
+  };
 };
-
-export const mutationsGenerator = <T>(
-  types: AnyObjects,
-  prefixType: string,
-  key: string
-) => ({
-  [types[`${prefixType}_${mutationActionKey[0]}`]]: (state: AnyObjects) =>
-    mutationReducers.setRequest(state, key),
-
-  [types[`${prefixType}_${mutationActionKey[1]}`]]: (
-    state: AnyObjects,
-    data: T
-  ) => mutationReducers.setSuccess<T>(state, key, data),
-
-  [types[`${prefixType}_${mutationActionKey[2]}`]]: (
-    state: AnyObjects,
-    error: Error
-  ) => mutationReducers.setFailure<Error>(state, key, error),
-});
-
 export const initState: InitState = {
   data: null,
   error: null,

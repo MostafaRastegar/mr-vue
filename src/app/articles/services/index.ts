@@ -3,7 +3,7 @@ import request from "@/utils/request";
 import type { PostArticlesBody } from "../interfaces/create.int";
 import type { PutArticlesSlugParams } from "../interfaces/update.int";
 
-const usersServices = {
+const services = {
   getTagsService() {
     const url = endpoints.ARTICLES.GET_TAGS();
     return request.get(url);
@@ -35,4 +35,4 @@ const usersServices = {
   },
 };
 
-export default usersServices;
+export default services;

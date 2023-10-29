@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import actionTemplate from "@/helpers/vuex/actionTemplate";
 import { ACCESS_TOKEN } from "@/constants/configs";
 import usersServices from "../services";
-import { POST_USERS, POST_USERS_LOGIN } from "../types";
+import types from "../types";
 import type { PostLoginBody, PostLoginResult } from "../interfaces/login.int";
 import type {
   PostRegisterBody,
@@ -24,7 +24,7 @@ const actions = {
     return actionTemplate({
       commit: context.commit,
       service: () => usersServices.postUsersLoginService(body),
-      type: POST_USERS_LOGIN,
+      type: types.POST_USERS_LOGIN,
       resolve: (data: PostLoginResult) => {
         Cookies.set(ACCESS_TOKEN, data.user.token);
         router.push("/articles/page/1");
@@ -39,7 +39,7 @@ const actions = {
     actionTemplate({
       commit: context.commit,
       service: () => usersServices.postUsersService(body),
-      type: POST_USERS,
+      type: types.POST_USERS,
       resolve: (data: PostRegisterResult) => {
         Cookies.set(ACCESS_TOKEN, data.user.token);
         router.push("/articles/page/1");
